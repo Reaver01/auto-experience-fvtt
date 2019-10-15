@@ -6,5 +6,6 @@
   "author": "Reaver#4634",
   "scripts": ["auto-experience.js"],
   "styles" : [],
-  "packs": []
+  "packs": [],
+  "systems": ["dnd5e"]
 }
