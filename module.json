@@ -1,0 +1,10 @@
+{
+  "name": "auto-experience",
+  "title": "Auto Experience",
+  "description": "Adds total experience value of deceased enemy NPCs and divides it between any living PCs in the combat tracker. Triggers on combat end.",
+  "version": "0.1",
+  "author": "Reaver#4634",
+  "scripts": ["auto-experience.js"],
+  "styles" : [],
+  "packs": []
+}
