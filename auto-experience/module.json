@@ -10,5 +10,5 @@
   "systems": ["dnd5e"],
   "url": "https://github.com/Reaver01/auto-experience-fvtt/tree/master/auto-experience",
   "manifest": "https://raw.githubusercontent.com/Reaver01/auto-experience-fvtt/master/auto-experience/module.json",
-  "download": "https://github.com/Reaver01/auto-experience-fvtt/tree/master/auto-experience.zip"
+  "download": "https://raw.githubusercontent.com/Reaver01/auto-experience-fvtt/tree/master/auto-experience.zip"
 }
