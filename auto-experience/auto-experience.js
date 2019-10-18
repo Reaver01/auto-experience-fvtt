@@ -2,9 +2,16 @@
 
 var addExperience;
 
-Hooks.on('preDeleteCombat', deletedCombat => {
-    defeatedEnemies = deletedCombat.turns.filter(object => (!object.actor.isPC && object.defeated && object.token.disposition === -1));
-    players = deletedCombat.turns.filter(object => (object.actor.isPC && !object.defeated));
+Hooks.on('preDeleteCombat', (entity, combatId) => {
+    DistributeExperience(entity);
+});
+
+// Distributes Experience to any living PCs in the combat tracker after ending combat if
+// addExperience Toggle has been set true. It adds together any experience from all HOSTILE NPC tokens
+// in the tracker, divides it by the number of PCs and adds it to their character sheet.
+function DistributeExperience(entity) {
+    defeatedEnemies = entity.turns.filter(object => (!object.actor.isPC && object.defeated && object.token.disposition === -1));
+    players = entity.turns.filter(object => (object.actor.isPC && !object.defeated));
     experience = 0;
     if (defeatedEnemies.length > 0 && addExperience) {
         defeatedEnemies.forEach(enemy => {
@@ -14,8 +21,8 @@ Hooks.on('preDeleteCombat', deletedCombat => {
             dividedExperience = Math.floor(experience / players.length);
             experienceMessage = '<b>Experience Awarded!</b><p><b>' + dividedExperience + '</b> added to:</br>';
             players.forEach(player => {
-                index = game.actors.index(player.actor.data._id);
-                game.actors.entities[index].update({
+                const actor = game.actors.entities.find(actor => actor.id === player.actor.data._id);
+                actor.update({
                     'data.details.xp.value': player.actor.data.data.details.xp.value + dividedExperience
                 });
                 experienceMessage += player.actor.data.name + '</br>';
@@ -30,9 +37,11 @@ Hooks.on('preDeleteCombat', deletedCombat => {
             });
         }
     }
-});
+}
 
-class NewCombat {
+class Auto5e {
+    // Eventually this will be replaced for combatibility.
+    // This function replaces Foundry's Native endCombat.
     async endCombat() {
         return new Promise((resolve, reject) => {
             if (!game.user.isGM) {
@@ -69,4 +78,5 @@ class NewCombat {
     }
 }
 
-Combat.prototype.endCombat = NewCombat.prototype.endCombat;
+// Replace Default endCombat with Auto5e's
+Combat.prototype.endCombat = Auto5e.prototype.endCombat;
